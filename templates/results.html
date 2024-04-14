@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+mark {
+    font-weight: bold;
+    background-color: inherit;
+}
+
+.highlight {
+    max-width: 50vw;
+    overflow-wrap: break-word;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.result, .center {
+    padding-left: 10vw;
+}
+
+.center {
+    padding-bottom: 20px;
+}
+
+.resurl {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 50vw;
+    white-space: nowrap;
+    font-size: small;
+}
+
+.rlcont {
+    margin-top: 5px;
+}
+
+.reslink, .calink {
+    text-decoration: none;
+}
+.reslink {
+    font-size: large;
+}
+.reslink:hover {
+    text-decoration: underline;
+}
+
+.result {
+    margin-bottom: 25px;
+}
+
+</style>
+
+<title>Results</title>
+</head>
+
+<body>
+ <form action="/search/" class="center">
+     <input type="text" name="query">
+     <input type="submit" value="Search">
+ </form>
+
+{{if .}}{{range .}}<div class="result"><label class="resurl">{{.URL}}</label><br>
+<div class="rlcont"><a class="reslink" href="{{.URL}}">{{.Title}}</a></div>
+{{if .Highlight}}<div class="highlight">{{.Highlight}}</div>{{end}}
+<div><a class="calink" href="/cache/?id={{.URL}}">cache</a></div></div>
+{{end}}{{else}}<p>No results.</p>{{end}}
+</body>
+</html>
