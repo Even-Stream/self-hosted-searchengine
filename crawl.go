@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    "log"
+    //"log"
     "time"
     "strings"
     "strconv"
@@ -58,13 +58,13 @@ func Crawl(db_path, crawl_time string, worker int) {
         doc, err := Index.Document(r.URL.String())
         Err_check(err)
         if doc != nil {
-            fmt.Println("Already crawled: ", r.URL.String())
+            //fmt.Println("Already crawled: ", r.URL.String())
             r.Abort()
-        } else {fmt.Println("Depth: ", r.Depth , "Visiting: ", r.URL)}
+        } //else {fmt.Println("Depth: ", r.Depth , "Visiting: ", r.URL)}
     }
 
     response_func := func(r *colly.Response) {
-        fmt.Println("Response from: ", r.Request.URL.String())
+        //fmt.Println("Response from: ", r.Request.URL.String())
         rec_type := mimetype.Detect(r.Body).String()
 
         result_type := "other" 
@@ -80,7 +80,7 @@ func Crawl(db_path, crawl_time string, worker int) {
     }
 
     err_func := func(_ *colly.Response, err error) {
-        log.Println("Something went wrong:", err)
+        //log.Println("Something went wrong:", err)
     }
 
     scraped_func := func(r *colly.Response) {
@@ -129,8 +129,8 @@ func Crawl(db_path, crawl_time string, worker int) {
 
     c.Limit(&colly.LimitRule{
         DomainGlob: "*",
-        Delay:    5 * time.Second,
-        RandomDelay: 5 * time.Second,
+        Delay:    10 * time.Second,
+        RandomDelay: 20 * time.Second,
     })
 
     c.WithTransport(&http.Transport{
@@ -174,7 +174,7 @@ func Crawl(db_path, crawl_time string, worker int) {
     q.Run(c)
     ex_q.Run(ex_c)
 
-    fmt.Printf("Crawer done: %d\n", worker)
+    //fmt.Printf("Crawer done: %d\n", worker)
 }
 
 func Initiate_crawl(worker int, now string) {

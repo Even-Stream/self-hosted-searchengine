@@ -12,7 +12,7 @@ func Listen() {
     mux.HandleFunc("/cache/", Cache_get)
 
     srv := &http.Server {
-        Addr: ":1024",
+        Addr: ":1025",
         IdleTimeout: 10 * time.Second,
         ReadTimeout: 6 * time.Second,
         ReadHeaderTimeout: 6 * time.Second,

@@ -3,6 +3,16 @@
 
 <head>
 <style>
+mark {
+    font-weight: bold;
+    background-color: inherit;
+}
+
+.highlight {
+    max-width: 50vw;
+    background-color: ghostwhite;
+}
+
 .result {
     padding-left: 10vw;
 }
@@ -23,7 +33,8 @@
 <body>
 {{if .}}{{range .}}<div class="result"><label class="reslink">{{.URL}}</label><br>
 <div><a href="{{.URL}}">{{.Title}}</a></div>
-<div class="calink"><a href="/cache/?id={{.URL}}">cache</a></div></div><br><br>
+<div class="calink"><a href="/cache/?id={{.URL}}">cache</a></div>
+{{if .Highlight}}<div class="highlight">{{.Highlight}}</div>{{end}}</div><br><br>
 {{end}}{{else}}<p>No results.</p>{{end}}
 </body>
 </html>

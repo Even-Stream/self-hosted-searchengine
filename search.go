@@ -2,6 +2,9 @@ package main
 
 import (
     //"fmt"
+    "html"
+    "strings"
+    "regexp"
     "text/template"
     "net/http"
 
@@ -9,7 +12,17 @@ import (
 )
 
 type Result struct {
-    Title, URL string
+    Title, URL, Highlight string
+}
+
+var htmlreg1 = regexp.MustCompile(`(&lt;|\A).*?&gt;`)
+var htmlreg2 = regexp.MustCompile(`&lt;.*?(&gt;|\z)`)
+
+func stripHtmlRegex(s string) string {
+    r := htmlreg1.ReplaceAllString(s, "")
+    r = htmlreg2.ReplaceAllString(r, "")
+    r = strings.NewReplacer("&gt;", "", "&lt;", "").Replace(r)
+    return html.UnescapeString(r)
 }
 
 func Search(w http.ResponseWriter, req *http.Request) {
@@ -19,6 +32,7 @@ func Search(w http.ResponseWriter, req *http.Request) {
 
     searchRequest := bleve.NewSearchRequest(query)
     searchRequest.Fields = []string{"Mime", "Title"}
+    searchRequest.Highlight = bleve.NewHighlight()
     searchRequest.Size = 20
 
     searchResult, err := Index.Search(searchRequest)
@@ -31,6 +45,8 @@ func Search(w http.ResponseWriter, req *http.Request) {
         if title := hit.Fields["Title"]; len(title.(string)) != 0 {
             cres.Title = title.(string)
         } else {cres.Title = hit.ID}
+
+        if frags := hit.Fragments["Body"]; len(frags) > 0 {cres.Highlight = stripHtmlRegex(frags[0])}
         
         results = append(results, cres)
     }
