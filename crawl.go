@@ -29,11 +29,18 @@ func takingbreak() {
 }
 
 func AddURLWD(q *queue.Queue, URL string, depth int) error {
+        doc, err := Index.Document(URL)
+        Err_check(err)
+        if doc != nil {
+            //log("Alright crawled: ", u)
+            return nil
+        }
+    
 	u, err := url.Parse(URL)
 	if err != nil {
 		return err
 	}
-
+        
         //this might be where max depth could be added
 	r := &colly.Request{
                 URL: u,
@@ -124,7 +131,7 @@ func Crawl(db_path, crawl_time string, worker int) {
     })
 
     c.MaxBodySize = 1024 * 1024
-    c.AllowURLRevisit = false
+    c.AllowURLRevisit = true
     c.DisableCookies()
 
     c.Limit(&colly.LimitRule{

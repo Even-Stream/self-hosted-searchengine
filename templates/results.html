@@ -11,10 +11,15 @@ mark {
 .highlight {
     max-width: 50vw;
     background-color: ghostwhite;
+    overflow-wrap: break-word;
 }
 
-.result {
+.result, .center {
     padding-left: 10vw;
+}
+
+.center {
+    padding-bottom: 20px;
 }
 
 .reslink {
@@ -31,6 +36,11 @@ mark {
 </head>
 
 <body>
+ <form action="/search/" class="center">
+     <input type="text" name="query">
+     <input type="submit" value="Search">
+ </form>
+
 {{if .}}{{range .}}<div class="result"><label class="reslink">{{.URL}}</label><br>
 <div><a href="{{.URL}}">{{.Title}}</a></div>
 <div class="calink"><a href="/cache/?id={{.URL}}">cache</a></div>

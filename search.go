@@ -29,6 +29,7 @@ func Search(w http.ResponseWriter, req *http.Request) {
     query_string := req.FormValue("query")
 
     query := bleve.NewMatchQuery(query_string)
+    //query.Fuzziness = 1
 
     searchRequest := bleve.NewSearchRequest(query)
     searchRequest.Fields = []string{"Mime", "Title"}
