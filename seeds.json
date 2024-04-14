@@ -1,0 +1,13 @@
+{
+    "Sample":  
+    {
+        "URL": ""
+    },
+    "Sample2":
+    {
+        "URL": "",
+        "Freq": 60,
+        "Images": false
+    },
+    "Seeds": []
+}
